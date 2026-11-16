@@ -6,6 +6,9 @@ on:
     #     branches:
     #         - 'main'
 
+permissions:
+    contents: write
+
 jobs:
     build:
         name: Build APK
@@ -46,6 +49,13 @@ jobs:
 
             - name: Build Debug APK
               run: ./gradlew assembleDebug
+
+            - name: Upload APK Artifact
+              uses: actions/upload-artifact@v4
+              with:
+                  name: app-debug
+                  path: app/build/outputs/apk/debug/*.apk
+                  if-no-files-found: error
 
             - name: Create GitHub Release
               uses: softprops/action-gh-release@v2
